@@ -241,14 +241,15 @@ def create_directory(path_input):
 
     # 检查路径是否存在
     if path.exists():
-        # # TODO 为了防止删除已有的实验结果，可以选择报错
-        # raise FileExistsError(f"路径 '{path}' 已经存在。")
-        try:
-            # 删除已有的目录及其内容
-            shutil.rmtree(path)
-            logging.info(f"路径 '{path}' 已经存在，已被删除。")
-        except Exception as e:
-            raise RuntimeError(f"删除目录时发生错误: {e}")
+        # TODO 为了防止删除已有的实验结果，可以选择报错
+        raise FileExistsError(f"路径 '{path}' 已经存在。")
+        # 也可以直接删除原来的数据
+        # try:
+        #     # 删除已有的目录及其内容
+        #     shutil.rmtree(path)
+        #     logging.info(f"路径 '{path}' 已经存在，已被删除。")
+        # except Exception as e:
+        #     raise RuntimeError(f"删除目录时发生错误: {e}")
     try:
         # 创建目录，包括必要的父目录
         path.mkdir(parents=True, exist_ok=True)
