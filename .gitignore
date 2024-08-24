@@ -9,7 +9,8 @@ test*.py
 
 
 # Ignore __pycache__ directory used by Python to store bytecode
-__pycache__/
+**/__pycache__/
+**/.mypy_cache/
 .DS_Store
 
 *.log

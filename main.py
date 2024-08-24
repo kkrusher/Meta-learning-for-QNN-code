@@ -30,21 +30,21 @@ if __name__ == "__main__":
     args = main_parser(config_file)
 
     # TODO CHECK for debug
-    # args.architecture = "QAOA"
+    args.architecture = "QAOA"
     args.ae_type = "GAE"
-    # args.hamiltonian_model_types = ["Ising"]
     args.hamiltonian_model_types = ["SK"]
-    # args.hamiltonian_model_types = ["HM-AILO"]
-    # args.hamiltonian_model_type_weights = None
-    # args.test_hamiltonian_model_types = ["Ising"]
-    # args.test_hamiltonian_model_type_weights = None
-    args.gae_n_epochs = 30
+
+    # args.gae_n_epochs = 3
     # args.gae_n_batches = 1
     # args.hypernet_n_epochs = 2
     # args.hypernet_n_batches = 2
     # args.n_random_hamiltonian_tobe_train = 2
     # args.n_encoder_output = 20
     # args.n_train_from_scratch_steps = 10
+
+    # 目前设置测试的即为训练用的
+    args.test_hamiltonian_model_types = args.hamiltonian_model_types
+    args.test_hamiltonian_model_type_weights = args.hamiltonian_model_type_weights
 
     args.encoder_hidden_dims = generate_hidden_dims(
         3 * (args.n_qubits**2), min_dim=args.n_encoder_output
