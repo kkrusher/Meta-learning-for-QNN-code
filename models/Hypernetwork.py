@@ -9,6 +9,7 @@ class Hypernetwork(nn.Module):
         n_layers,
         n_hamiltonian_rep_dim,
         n_output_dim_each_layer,
+        qnn_type,
         mlp_hidden_dim=64,
     ):
         """
@@ -21,6 +22,7 @@ class Hypernetwork(nn.Module):
         self.n_qubits = n_qubits
         self.n_layers = n_layers
         self.n_output_dim_each_layer = n_output_dim_each_layer
+        self.qnn_type = qnn_type
 
         # 两层MLP用于初步处理拼接的隐空间表示
         self.initial_mlp = nn.Sequential(
@@ -44,7 +46,8 @@ class Hypernetwork(nn.Module):
 
     def forward(self, batch_z):
         # 拼接所有节点的隐空间表示
-        z_0 = torch.reshape(batch_z, (batch_z.size(0), -1))
+        # z_0 = torch.reshape(batch_z, (batch_z.size(0), -1))
+        z_0 = batch_z
         # 通过两层MLP的初步处理
         z_1 = self.initial_mlp(z_0)
 
@@ -59,7 +62,17 @@ class Hypernetwork(nn.Module):
 
         # 将每一层的参数组合成一个整体
         generated_layer_params = torch.stack(generated_layer_params)
-        generated_layer_params = generated_layer_params.permute(
-            1, 2, 0
-        )  # (Layer, Batch, n_output_dim_each_layer) -> (Batch, n_output_dim_each_layer, Layer)
+
+        if self.qnn_type == "QAOA":
+            generated_layer_params = generated_layer_params.permute(
+                1, 2, 0
+            )  # (Layer, Batch, n_output_dim_each_layer) -> (Batch, n_output_dim_each_layer, Layer)
+        elif self.qnn_type == "HEA":
+            generated_layer_params = generated_layer_params.permute(
+                1, 0, 2
+            )  # (Layer, Batch, n_output_dim_each_layer) -> (Batch, Layer, n_output_dim_each_layer)
+            generated_layer_params = generated_layer_params.view(
+                -1, self.n_layers, self.n_qubits, 3
+            )
+
         return generated_layer_params

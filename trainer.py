@@ -252,7 +252,11 @@ def train_hypernet_HEA(
 ):
     n_output_dim_each_layer = n_qubits * 3
     hypernet = Hypernetwork(
-        n_qubits, n_layers, ae_encoder.n_encoder_output, n_output_dim_each_layer
+        n_qubits,
+        n_layers,
+        ae_encoder.n_encoder_output,
+        n_output_dim_each_layer,
+        qnn_type="HEA",
     )
     qnn = HEA(n_qubits, n_layers)
 
@@ -305,7 +309,7 @@ def train_hypernet_HEA(
 
             # Hypernetwork generates QNN parameters
             paramsz_batch = hypernet(z_batch)
-            paramsz_batch = paramsz_batch.view(-1, n_layers, qnn.n_qubits, 3)
+            # paramsz_batch = paramsz_batch.view(-1, n_layers, qnn.n_qubits, 3)
             loss = 0
             # Forward propagate through QNN, compute ground state energy
             predicted_energy = qnn(paramsz_batch, hamiltonian_batch)
@@ -354,7 +358,11 @@ def train_hypernet_QAOA(
 ):
     n_output_dim_each_layer = 2
     hypernet = Hypernetwork(
-        n_qubits, n_layers, ae_encoder.n_encoder_output, n_output_dim_each_layer
+        n_qubits,
+        n_layers,
+        ae_encoder.n_encoder_output,
+        n_output_dim_each_layer,
+        qnn_type="QAOA",
     )
 
     optimizer = optim.Adam(list(hypernet.parameters()), lr=0.001)
@@ -403,7 +411,7 @@ def train_hypernet_QAOA(
 
             # Hypernetwork generates QNN parameters
             paramsz_batch = hypernet(z_batch)
-            paramsz_batch = paramsz_batch.view(-1, 2, n_layers)
+            # paramsz_batch = paramsz_batch.view(-1, 2, n_layers)
             loss = 0
             for i, hamiltonian in enumerate(hamiltonian_batch):
                 qnn = QAOA(n_qubits, n_layers, hamiltonian)
@@ -617,6 +625,7 @@ def compare_generated_and_trained_qnn(
             args.n_layers,
             args.n_encoder_output,
             n_output_dim_each_layer,
+            args.architecture,
         )
 
         # Generate and evaluate the HEA model

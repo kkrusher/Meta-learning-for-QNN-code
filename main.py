@@ -30,7 +30,7 @@ if __name__ == "__main__":
     args = main_parser(config_file)
 
     # TODO CHECK for debug
-    # args.architecture = "QAOA"
+    args.architecture = "QAOA"
     # args.ae_type = "GAE"
     # args.hamiltonian_model_types = ["SK"]
 

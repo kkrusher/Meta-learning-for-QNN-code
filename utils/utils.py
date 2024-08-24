@@ -329,7 +329,8 @@ def generate_and_evaluate_qaoa(
             batch_z = ae_encoder(batch_adjs_flattened)
 
         # Use Hypernetwork to generate QAOA parameters
-        params = hypernet(batch_z).view(-1, 2, n_layers)
+        # params = hypernet(batch_z).view(-1, 2, n_layers)
+        params = hypernet(batch_z)
 
         # Initialize QAOA model
         qaoa = QAOA(n_qubits, n_layers, hamiltonian)
@@ -379,7 +380,8 @@ def generate_and_evaluate_hea(
             batch_z = ae_encoder(batch_adjs_flattened)
 
         # Use Hypernetwork to generate HEA parameters
-        generated_params = hypernet(batch_z).view(-1, n_layers, n_qubits, 3)
+        # generated_params = hypernet(batch_z).view(-1, n_layers, n_qubits, 3)
+        generated_params = hypernet(batch_z)
 
         # Initialize HEA model
         hea = HEA(n_qubits, n_layers)
