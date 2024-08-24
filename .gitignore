@@ -1,0 +1,15 @@
+**/data/
+**/*results/
+
+# Ignore all Python files starting with 'test'
+test*.py
+
+# Ignore Python bytecode (compiled files)
+*.pyc
+
+
+# Ignore __pycache__ directory used by Python to store bytecode
+__pycache__/
+.DS_Store
+
+*.log
