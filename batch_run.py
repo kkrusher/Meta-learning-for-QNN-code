@@ -24,7 +24,7 @@ for ae_type in ae_types:
             f"nohup python -u ./main.py "
             f"--architecture {architecture} "
             f"--ae_type {ae_type} "
-            f'--hamiltonian_model_types ["{hamiltonian_model}"] '
+            f'--hamiltonian_model_types {hamiltonian_model} '
             f"> ./{dir_path}/{log_name}.log 2>&1 &"
         )
         print(command)
@@ -50,7 +50,7 @@ for ae_type in ae_types:
             f"nohup python -u ./main.py "
             f"--architecture {architecture} "
             f"--ae_type {ae_type} "
-            f'--hamiltonian_model_types ["{hamiltonian_model}"] '
+            f'--hamiltonian_model_types {hamiltonian_model} '
             f"> ./{dir_path}/{log_name}.log 2>&1 &"
         )
         print(command)
